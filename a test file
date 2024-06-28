@@ -1,0 +1,32 @@
+const { expect } = require("chai");
+
+describe("DegenToken", function () {
+  let DegenToken, degenToken, owner, addr1, addr2;
+
+  beforeEach(async function () {
+    [owner, addr1, addr2, _] = await ethers.getSigners();
+    DegenToken = await ethers.getContractFactory("DegenToken");
+    degenToken = await DegenToken.deploy();
+    await degenToken.deployed();
+  });
+
+  it("Should have the correct name and symbol", async function () {
+    expect(await degenToken.name()).to.equal("Degen");
+    expect(await degenToken.symbol()).to.equal("DGN");
+  });
+
+  it("Should assign the initial supply to the owner", async function () {
+    const ownerBalance = await degenToken.balanceOf(owner.address);
+    expect(await degenToken.totalSupply()).to.equal(ownerBalance);
+  });
+
+  it("Should transfer tokens between accounts", async function () {
+    await degenToken.transfer(addr1.address, 50);
+    const addr1Balance = await degenToken.balanceOf(addr1.address);
+    expect(addr1Balance).to.equal(50);
+
+    await degenToken.connect(addr1).transfer(addr2.address, 50);
+    const addr2Balance = await degenToken.balanceOf(addr2.address);
+    expect(addr2Balance).to.equal(50);
+  });
+});
