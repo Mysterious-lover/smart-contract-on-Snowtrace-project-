@@ -1,0 +1,16 @@
+DegenToken/
+│
+├── contracts/
+│   └── DegenToken.sol
+│
+├── scripts/
+│   └── deploy.js
+│
+├── test/
+│   └── test.js
+│
+├── hardhat.config.js
+│
+├── package.json
+│
+└── README.md
